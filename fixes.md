@@ -27,6 +27,9 @@ copy of the same notebook with embedded outputs and was left untouched.
 | 11 | `PATCH_SIZE` and `HOG_PARAMS` were defined in Section 6.1 but referenced earlier in the EDA cell `2.8.7` (NameError on first run) | Blocker | Fixed (constants moved into Section 1.4) |
 | 12 | `np.random.default_rng().choice(train_ids, ...)` returned `numpy.int64`; pycocotools' `loadImgs` silently returns `None` for non-`int` ids -> `TypeError: 'NoneType' object is not subscriptable` in EDA 2.8.7 | Blocker | Fixed (cast to Python `int`, plus empty-list and missing-image guards in same cell) |
 | 13 | `total_time / len(preds) * 1000` could divide by zero if zero test images existed on disk (Section 3.2 / 4.3 / 5.4) | Low (latent) | Fixed (replaced `len(...)` with `max(len(...), 1)`) |
+| 14 | Faster R-CNN training was running at 25.64 s/batch (projected 17 days) due to 1333x800 input + FP32 + `num_workers=0` causing 97% VRAM thrashing | Blocker | Fixed (`min_size=600/max_size=1000`, `torch.amp.autocast(bfloat16)`, `num_workers=4` with `persistent_workers`); benchmark confirms 0.20 s/batch — **130x speedup** |
+| 15 | HOG+SVM inference ran serially (~3.5 hr on 5,791 test images) | Medium | Fixed (parallelised across CPU cores with `joblib.Parallel(loky)`; ~25-30 min on 8 cores) |
+| 16 | YOLO Phase 1 / Phase 2 weights ended up in `models/yolo_finetune_v2/` instead of `models/yolo_finetune/` (Ultralytics auto-numbered when the existing empty `yolo_finetune/` dir was present), so the skip-load logic could not find them | Blocker | Fixed (renamed `yolo_finetune_v2` -> `yolo_finetune`; YOLO training now skipped on re-run) |
 
 All edits were applied in place to `Human_Detection_Enhanced.ipynb`. The
 notebook now has 72 cells (one bogus cell deleted, others rewritten).
