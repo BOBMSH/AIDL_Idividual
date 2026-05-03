@@ -20,6 +20,18 @@ yolov11*.pt
 
 # Local helper / scratch files
 _apply_fixes.py
+_apply_*.py
+_verify_*.py
+
+# Notebook backup snapshots created during fix sessions
+*.ipynb.*.bak
+Human_Detection_Enhanced.ipynb.pre-*.bak
+
+# Per-cell review dumps (scratch)
+_review_cells/
+
+# Stale comparison-table snapshots (kept locally for diffing, not pushed)
+human_detection_project/results/comparison_table.stale-*.json
 
 # Editor / tool metadata
 .claude/
