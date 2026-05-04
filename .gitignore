@@ -10,6 +10,9 @@ human_detection_project/data/
 # YOLO-format dataset export (~8.7 GB) -- rebuilt by Section 2.5
 human_detection_project/yolo_dataset/
 
+# Kaggle-mirrored copies of the data/models/results trees (kept local only)
+kaggle_files/
+
 # Auto-downloaded YOLO weights at repo root (Ultralytics caches these)
 yolov8n.pt
 yolo11*.pt
